@@ -38,7 +38,7 @@ set-strictmode -v latest
   function rqini{
     $my.serv=$serv
     $my.sou="http://s43sou$($my.serv).its.local"
-    $my.ars='s39ars{0:d2}' -f $my.serv
+    $my.ars='s43ars{0:d2}' -f $my.serv
     $my.acc='text/html,application/xhtml+xml,*/*'
     $my.ua='Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'
     $my.HRQH=[net.httprequestheader]
