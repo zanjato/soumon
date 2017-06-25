@@ -283,8 +283,8 @@ public static class PSConIO{
     conio
     synth
     $my.t0=[datetime]'1970-01-01'
-    $my.gu='Волго-Вятское ГУ Банка России'
-    $my.tu='ОТДЕЛЕНИЕ КИРОВ'
+    $my.gu='ГУ'
+    $my.tu='ТУ'
     $my.ft='dd-MM-yy HH:mm'
     $my.rui=$host.ui.rawui
     setbsw 512
