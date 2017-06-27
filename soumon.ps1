@@ -288,7 +288,6 @@ public static class PSConIO{
     $my.ft='dd-MM-yy HH:mm'
     $my.rui=$host.ui.rawui
     setbsw 512
-    $my.ps=[diagnostics.process]::getcurrentprocess()
   }
   function mkrq{param($mth,$pth,$acc)
     $rq=[net.httpwebrequest]::create("$($my.sou)/arsys/${pth}")
