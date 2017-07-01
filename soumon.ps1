@@ -60,19 +60,19 @@ if\(getCurWFC_NS\(this\.windowID\)!=null\)
  getCurWFC_NS\(this\.windowID\)\.status\(\[\]\);$
 '@ -f $my.ars -replace '\r\n'
     $my.inc=new-object psobject -pr @{
-      '№'=$null
-      'Инц.'=$null
-      'Ст.'=$null
-      'Отв.'=$null
-      'Срок'=$null
-      'Кл.'=$null
-      'Сопр.'=$null
+      'в„–'=$null
+      'РРЅС†.'=$null
+      'РЎС‚.'=$null
+      'РћС‚РІ.'=$null
+      'РЎСЂРѕРє'=$null
+      'РљР».'=$null
+      'РЎРѕРїСЂ.'=$null
       SLM=$null
-      'Создан'=$null
-      'Содер.'=$null
-      'Серв.'=$null
-      'Приор.'=$null
-      'IdЗ'=$null
+      'РЎРѕР·РґР°РЅ'=$null
+      'РЎРѕРґРµСЂ.'=$null
+      'РЎРµСЂРІ.'=$null
+      'РџСЂРёРѕСЂ.'=$null
+      'IdР—'=$null
     }
   }
   function conio{
@@ -283,8 +283,8 @@ public static class PSConIO{
     conio
     synth
     $my.t0=[datetime]'1970-01-01'
-    $my.gu='Волго-Вятское ГУ Банка России'
-    $my.tu='ОТДЕЛЕНИЕ КИРОВ'
+    $my.gu='Р’РѕР»РіРѕ-Р’СЏС‚СЃРєРѕРµ Р“РЈ Р‘Р°РЅРєР° Р РѕСЃСЃРёРё'
+    $my.tu='РћРўР”Р•Р›Р•РќРР• РљРР РћР’'
     $my.ft='dd-MM-yy HH:mm'
     $my.rui=$host.ui.rawui
     setbsw 512
@@ -414,34 +414,34 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
         $fl="${fl}!"
         if($tu -eq $my.tu){$beep=$true}
       }
-      $inc.'№'=$f -f $i,$fl
-      $inc.'Инц.'=$_.d[0].p
-      $inc.'Ст.'=$ss.v
-      $inc.'Отв.'=$a
-      $inc.'Срок'=$my.t0.addseconds($dd).tolocaltime().tostring($my.ft)
-      $inc.'Кл.'=$_.d[33].p+' '+$_.d[13].p[0]+'.'+$_.d[27].p[0]+'.'
-      $inc.'Сопр.'=$my.t0.addseconds($rs).tolocaltime().tostring($my.ft)
+      $inc.'в„–'=$f -f $i,$fl
+      $inc.'РРЅС†.'=$_.d[0].p
+      $inc.'РЎС‚.'=$ss.v
+      $inc.'РћС‚РІ.'=$a
+      $inc.'РЎСЂРѕРє'=$my.t0.addseconds($dd).tolocaltime().tostring($my.ft)
+      $inc.'РљР».'=$_.d[33].p+' '+$_.d[13].p[0]+'.'+$_.d[27].p[0]+'.'
+      $inc.'РЎРѕРїСЂ.'=$my.t0.addseconds($rs).tolocaltime().tostring($my.ft)
       $inc.SLM=$_.d[12].v
-      $inc.'Создан'=$my.t0.addseconds($_.d[60].p).tolocaltime().tostring($my.ft)
-      $inc.'Содер.'=$_.d[4].p
-      $inc.'Серв.'=$_.d[5].p
-      $inc.'Приор.'=$_.d[6].v
-      $inc.'IdЗ'=$_.i #'ЗНО'=$_.d[3].p
+      $inc.'РЎРѕР·РґР°РЅ'=$my.t0.addseconds($_.d[60].p).tolocaltime().tostring($my.ft)
+      $inc.'РЎРѕРґРµСЂ.'=$_.d[4].p
+      $inc.'РЎРµСЂРІ.'=$_.d[5].p
+      $inc.'РџСЂРёРѕСЂ.'=$_.d[6].v
+      $inc.'IdР—'=$_.i #'Р—РќРћ'=$_.d[3].p
       $inc
-    }|ft '№','Инц.','Ст.','Отв.','Срок','Кл.','Сопр.',SLM,
-         'Создан','Содер.','Серв.','Приор.','IdЗ' -a
+    }|ft 'в„–','РРЅС†.','РЎС‚.','РћС‚РІ.','РЎСЂРѕРє','РљР».','РЎРѕРїСЂ.',SLM,
+         'РЎРѕР·РґР°РЅ','РЎРѕРґРµСЂ.','РЎРµСЂРІ.','РџСЂРёРѕСЂ.','IdР—' -a
     if($beep){
       [console]::beep(1000,100)
-      if($my.syn){try{$my.syn.speak('угроза премированию')}catch{}}
+      if($my.syn){try{$my.syn.speak('СѓРіСЂРѕР·Р° РїСЂРµРјРёСЂРѕРІР°РЅРёСЋ')}catch{}}
     }
   }
   function shincs{
     &{
-      write-host 'Обновление...'
+      write-host 'РћР±РЅРѕРІР»РµРЅРёРµ...'
       sesbeg
       $incs=rqincs
       sesfin
-      if($incs){outincs $incs}else{write-host 'Данные не получены...'}
+      if($incs){outincs $incs}else{write-host 'Р”Р°РЅРЅС‹Рµ РЅРµ РїРѕР»СѓС‡РµРЅС‹...'}
     }
     if((date).minute%5 -eq 0){
       [gc]::collect();[gc]::waitforpendingfinalizers();[gc]::collect()
@@ -457,7 +457,7 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
     $ev=$coord=$url=$null
     $sw=[diagnostics.stopwatch]::startnew()
     for(;;){
-      $my.rui.windowtitle="СОУ Монитор - $(date -f 'HH:mm:ss')"
+      $my.rui.windowtitle="РЎРћРЈ РњРѕРЅРёС‚РѕСЂ - $(date -f 'HH:mm:ss')"
       if($shi){$sw.reset();shincs;$shi=$false;$sw.start()}
       $wo0=[PSConIO]::waitforsingleobject($my.cin,300)
       if($wo0 -ne [PSConIO]::WAIT_OBJECT_0){
