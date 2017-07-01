@@ -37,8 +37,8 @@ set-strictmode -v latest
   }
   function rqini{
     $my.serv=$serv
-    $my.sou="http://s39websouits$($my.serv).vip.cbr.ru"
-    $my.ars='s39ars{0:d2}' -f $my.serv
+    $my.sou="http://s43sou$($my.serv).vip"
+    $my.ars='s43ars{0:d2}' -f $my.serv
     $my.acc='text/html,application/xhtml+xml,*/*'
     $my.ua='Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'
     $my.HRQH=[net.httprequestheader]
@@ -283,8 +283,8 @@ public static class PSConIO{
     conio
     synth
     $my.t0=[datetime]'1970-01-01'
-    $my.gu='Волго-Вятское ГУ Банка России'
-    $my.tu='ОТДЕЛЕНИЕ КИРОВ'
+    $my.gu='ГУ'
+    $my.tu='ТУ'
     $my.ft='dd-MM-yy HH:mm'
     $my.rui=$host.ui.rawui
     setbsw 512
