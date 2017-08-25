@@ -18,10 +18,10 @@ sp 'registry::hklm\software\microsoft\.netframework' `
 sp 'registry::hklm\software\wow6432node\microsoft\.netframework' `
   OnlyUseLatestCLR 1 -t dword#>
 param([validaterange(1,9)][int]$serv=6,[validaterange(60,300)][int]$refr=90)
-[runtime.gcsettings]::latencymode=0
 set-strictmode -v latest
 &{
   $erroractionpreference='stop'
+  [runtime.gcsettings]::latencymode='batch'
   function dispose-after{
     param([validatenotnull()][object]$obj,[validatenotnull()][scriptblock]$sb)
     try{&$sb}
