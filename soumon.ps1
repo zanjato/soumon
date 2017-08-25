@@ -17,8 +17,8 @@ sp 'registry::hklm\software\microsoft\.netframework' `
   OnlyUseLatestCLR 1 -t dword
 sp 'registry::hklm\software\wow6432node\microsoft\.netframework' `
   OnlyUseLatestCLR 1 -t dword#>
-param([validaterange(1,9)][int]$serv=6,[validaterange(60,300)][int]$refr=60)
-[runtime.gcsettings]::latencymode='interactive'
+param([validaterange(1,9)][int]$serv=6,[validaterange(60,300)][int]$refr=90)
+[runtime.gcsettings]::latencymode=0
 set-strictmode -v latest
 &{
   $erroractionpreference='stop'
@@ -37,10 +37,8 @@ set-strictmode -v latest
   }
   function rqini{
     $my.serv=$serv
-    $my.sou="http://s99sou$($my.serv).vip.local"
-    $my.ars='s99ars{0:d2}' -f $my.serv
-    $my.acc='text/html,application/xhtml+xml,*/*'
-    $my.ua='Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'
+    $my.sou="http://s43web$($my.serv).local"
+    $my.ars='s43ars{0:d2}' -f $my.serv
     $my.HRQH=[net.httprequestheader]
     [net.servicepointmanager]|%{
       $_::expect100continue=$false
@@ -52,7 +50,6 @@ set-strictmode -v latest
     }
     $my.cc=new-object net.cookiecontainer
     $my.u8=[text.encoding]::utf8
-    $my.ascii=[text.encoding]::ascii
     $my.jl=($my.jsb='this.result={').length-1
     $my.jsf=@'
 \}};;this\.cacheIDRefCount=\{{"{0}":\d+\}};;
@@ -316,28 +313,28 @@ public static class PSConIO{
     $my.rui=$host.ui.rawui
     setbsw 512
   }
-  function mkrq{param($mth,$pth,$acc)
+  function mkrq{param($mth,$pth='',$acc='text/html,application/xhtml+xml,*/*')
     $rq=[net.httpwebrequest]::create("$($my.sou)/arsys/${pth}")
     $rq.accept=$acc
     $rq.allowautoredirect=$true
-    $rq.headers[$my.HRQH::acceptencoding]='gzip'#+',deflate'
     $rq.headers[$my.HRQH::acceptlanguage]='ru-RU'
-    $rq.automaticdecompression='gzip'
+    $rq.automaticdecompression='gzip,deflate'
+    $rq.authenticationlevel='mutualauthrequested'
+    $rq.credentials=[net.credentialcache]::defaultnetworkcredentials
+    $rq.preauthenticate=$true
     $rq.cookiecontainer=$my.cc
     $rq.headers['DNT']=1
-    $rq.keepalive=$true
     $rq.method=$mth
-    $rq.useragent=$my.ua
+    $rq.timeout=300000
+    $rq.useragent='Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'
     $rq
   }
   function sesbeg{
-    $rq=mkrq 'GET' '' $my.acc
-    $rq.credentials=[net.credentialcache]::defaultcredentials
-    $rq.preauthenticate=$true
+    $rq=mkrq 'GET'
     dispose-after($rq.getresponse()){}
-    $rq=mkrq 'POST' '' $my.acc
+    $rq=mkrq 'POST'
     $rq.headers[$my.HRQH::pragma]='no-cache'
-    $post=$my.ascii.getbytes('timezone=use_server&goto=null&tzind=1')
+    $post=[byte[]][char[]]'timezone=use_server&goto=null&tzind=1'
     $rq.contentlength=$c=$post.count
     $rq.contenttype='application/x-www-form-urlencoded'
     dispose-after($st=$rq.getrequeststream()){
@@ -403,9 +400,10 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
     rqdat $get
   }#>
   function sesfin{
-    $rq=mkrq 'POST' 'servlet/LogoutServlet' $my.acc
+    $rq=mkrq 'POST' 'servlet/LogoutServlet'
+    $rq.keepalive=$false
     $rq.headers[$my.HRQH::pragma]='no-cache'
-    $post=$my.ascii.getbytes("sToken=$($my.tok)")
+    $post=[byte[]][char[]]"sToken=$($my.tok)"
     $rq.contentlength=$c=$post.count
     $rq.contenttype='application/x-www-form-urlencoded'
     dispose-after($st=$rq.getrequeststream()){
@@ -463,16 +461,11 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
     }
   }
   function shincs{
-    &{
-      write-host 'Обновление...'
-      sesbeg
-      $incs=rqincs
-      sesfin
-      if($incs){outincs $incs}else{write-host 'Данные не получены...'}
-    }
-    if((date).minute%5 -eq 0){
-      [gc]::collect();[gc]::waitforpendingfinalizers();[gc]::collect()
-    }
+    write-host 'Обновление...'
+    sesbeg
+    $incs=rqincs
+    sesfin
+    if($incs){outincs $incs}else{write-host 'Данные не получены...'}
   }
   function cin{
     $shi=$true
