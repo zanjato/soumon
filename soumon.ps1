@@ -22,6 +22,7 @@ set-strictmode -v latest
 &{
   $erroractionpreference='stop'
   [runtime.gcsettings]::latencymode='batch'
+  function outx{param($x)$x|out-string|write-warning}
   function dispose-after{
     param([validatenotnull()][object]$obj,[validatenotnull()][scriptblock]$sb)
     try{&$sb}
@@ -461,11 +462,13 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
     }
   }
   function shincs{
-    write-host 'Обновление...'
-    sesbeg
-    $incs=rqincs
-    sesfin
-    if($incs){outincs $incs}else{write-host 'Данные не получены...'}
+    try{
+      write-host 'Обновление...'
+      sesbeg
+      $incs=rqincs
+      sesfin
+      if($incs){outincs $incs}else{write-host 'Данные не получены...'}
+    }catch{outx $_}
   }
   function cin{
     $shi=$true
@@ -536,7 +539,6 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
       }
     }
   }
-  function outx{param($x)$x|out-string|write-warning}
   function fin{
     if($my.tok){try{sesfin}catch{outx $_}}
     if($my.syn){$my.syn.dispose()}
