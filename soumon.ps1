@@ -22,7 +22,6 @@ set-strictmode -v latest
 &{
   $erroractionpreference='stop'
   [runtime.gcsettings]::latencymode='batch'
-  function outx{param($x)$x|out-string|write-warning}
   function dispose-after{
     param([validatenotnull()][object]$obj,[validatenotnull()][scriptblock]$sb)
     try{&$sb}
@@ -32,14 +31,15 @@ set-strictmode -v latest
       }
     }
   }
+  function outx{param($x)$x|out-string|write-warning}
   function json{
     add-type -a system.web.extensions
     $my.jss=new-object web.script.serialization.javascriptserializer
   }
   function rqini{
     $my.serv=$serv
-    $my.sou="http://s43web$($my.serv).local"
-    $my.ars='s43ars{0:d2}' -f $my.serv
+    $my.sou="http://s39websouits$($my.serv).vip.local"
+    $my.ars='s39ars{0:d2}' -f $my.serv
     $my.HRQH=[net.httprequestheader]
     [net.servicepointmanager]|%{
       $_::expect100continue=$false
@@ -49,7 +49,6 @@ set-strictmode -v latest
         $true
       }
     }
-    $my.cc=new-object net.cookiecontainer
     $my.u8=[text.encoding]::utf8
     $my.jl=($my.jsb='this.result={').length-1
     $my.jsf=@'
@@ -68,9 +67,8 @@ if\(getCurWFC_NS\(this\.windowID\)!=null\)
       SLM=$null
       'Создан'=$null
       'Содер.'=$null
-      'Серв.'=$null
-      'Приор.'=$null
-      'IdЗ'=$null
+      #'Серв.'=$null;'Приор.'=$null;'ЗНО'=$null
+      Id3=$null
     }
   }
   function conio{
@@ -312,7 +310,7 @@ public static class PSConIO{
     $my.tu='ТУ'
     $my.ft='dd-MM-yy HH:mm'
     $my.rui=$host.ui.rawui
-    setbsw 512
+    setbsw 256
   }
   function mkrq{param($mth,$pth='',$acc='text/html,application/xhtml+xml,*/*')
     $rq=[net.httpwebrequest]::create("$($my.sou)/arsys/${pth}")
@@ -320,9 +318,6 @@ public static class PSConIO{
     $rq.allowautoredirect=$true
     $rq.headers[$my.HRQH::acceptlanguage]='ru-RU'
     $rq.automaticdecompression='gzip,deflate'
-    $rq.authenticationlevel='mutualauthrequested'
-    $rq.credentials=[net.credentialcache]::defaultnetworkcredentials
-    $rq.preauthenticate=$true
     $rq.cookiecontainer=$my.cc
     $rq.headers['DNT']=1
     $rq.method=$mth
@@ -331,7 +326,11 @@ public static class PSConIO{
     $rq
   }
   function sesbeg{
+    $my.cc=new-object net.cookiecontainer
     $rq=mkrq 'GET'
+    $rq.authenticationlevel='mutualauthrequired'
+    $rq.credentials=[net.credentialcache]::defaultcredentials
+    $rq.preauthenticate=$true
     dispose-after($rq.getresponse()){}
     $rq=mkrq 'POST'
     $rq.headers[$my.HRQH::pragma]='no-cache'
@@ -450,20 +449,19 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
       $inc.SLM=$_.d[12].v
       $inc.'Создан'=$my.t0.addseconds($_.d[60].p).tolocaltime().tostring($my.ft)
       $inc.'Содер.'=$_.d[4].p
-      $inc.'Серв.'=$_.d[5].p
-      $inc.'Приор.'=$_.d[6].v
-      $inc.'IdЗ'=$_.i #'ЗНО'=$_.d[3].p
+      #$inc.'Серв.'=$_.d[5].p;$inc.'Приор.'=$_.d[6].v;$inc.'ЗНО'=$_.d[3].p
+      $inc.Id3=$_.i
       $inc
-    }|ft '№','Инц.','Ст.','Отв.','Срок','Кл.','Сопр.',SLM,
-         'Создан','Содер.','Серв.','Приор.','IdЗ' -a
+    }|ft '№','Инц.','Ст.','Отв.','Срок','Кл.',
+         'Сопр.',SLM,'Создан','Содер.',Id3 -a
     if($beep){
       [console]::beep(1000,100)
       if($my.syn){try{$my.syn.speak('угроза премированию')}catch{}}
     }
   }
   function shincs{
+    write-host 'Обновление...'
     try{
-      write-host 'Обновление...'
       sesbeg
       $incs=rqincs
       sesfin
