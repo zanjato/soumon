@@ -310,7 +310,7 @@ public static class PSConIO{
     $my.tu='ТУ'
     $my.ft='dd-MM-yy HH:mm'
     $my.rui=$host.ui.rawui
-    setbsw 256
+    setbsw 512
   }
   function mkrq{param($mth,$pth='',$acc='text/html,application/xhtml+xml,*/*')
     $rq=[net.httpwebrequest]::create("$($my.sou)/arsys/${pth}")
@@ -481,7 +481,7 @@ iew9/3013896148/{0}11/HPD:WorkLog0/1/03/1009/2/1/52/-145/1\4\1\1\1000000161\99\1
     $ev=$coord=$url=$null
     $sw=[diagnostics.stopwatch]::startnew()
     for(;;){
-      $my.rui.windowtitle="СОУ Монитор - $(date -f 'HH:mm:ss')"
+      $my.rui.windowtitle="СОУ Монитор (22) - $(date -f 'HH:mm:ss')"
       if($shi){$sw.reset();shincs;$shi=$false;$sw.start()}
       $wo0=[PSConIO]::waitforsingleobject($my.cin,300)
       if($wo0 -ne [PSConIO]::WAIT_OBJECT_0){
